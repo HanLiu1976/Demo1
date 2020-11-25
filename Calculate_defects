@@ -1,0 +1,45 @@
+import sys
+from pyral import Rally, rallyWorkset
+
+options = [arg for arg in sys.argv[1:] if arg.startswith('--')]
+args = [arg for arg in sys.argv[1:] if arg not in options]
+server, user, password, apikey, workspace, project = rallyWorkset(options)
+# rally = Rally(server, user, password, apikey=apikey, workspace=workspace, project=project)
+rally = Rally('rally1.rallydev.com', 'han.liu@sas.com', 'A@sas.com', server_ping=True)
+
+# rally.enableLogging('mypyral.log')
+rally.enableLogging(dest=sys.stdout, attrget=False, append=False)
+response = rally.get('Release', fetch="Project,Name,ReleaseStartDate,ReleaseDate",
+                     order="ReleaseDate")
+
+proj1 = rally.getProjects(workspace='HLS: RnD Health and Life Sciences')
+# print ("project = ", proj1.Name)
+
+workspaces = rally.getWorkspaces()
+for wksp in workspaces:
+    # print("workspace =", wksp.oid, wksp.Name )
+    projects = rally.getProjects(workspace=wksp.Name)
+    for proj in projects:
+        # print ('project name =',proj.oid, proj.Name)
+        if proj.Name.__eq__('LSAF 5.x'):
+            print("We are into LSAF 5.x project")
+            print("-------------------------------------------------------")
+            tester_name_list = ["shuang.fu", "junru.liu", "ping.lu", "yeqian.gu", "di.chen"]
+            query_time = "2020-01-01"
+            i = 0
+            while i < len(tester_name_list):
+                query_criteria1 = 'CreationDate >= "2020-01-01"' + ' and SubmittedBy contains ' + tester_name_list[i] + '@sas.com'
+                response1 = rally.get('Defect', fetch=True, query=query_criteria1)
+                High_sum=0.0
+                Valid_sum=0.0
+                print("--------------------- " + tester_name_list[i] + "-------------------")
+                for temp in response1:
+                    if temp.Severity in "High,Alert":
+                        High_sum = High_sum+1
+                    if temp.Resolution in "Fixed,No Fix,Converted,N/A,None":
+                        Valid_sum = Valid_sum+1
+                print("Total defects =", response1.resultCount)
+                print("High defects =", High_sum)
+                print("Valid defects =", Valid_sum)
+                print("Valid rate =", Valid_sum/response1.resultCount)
+                i = i + 1

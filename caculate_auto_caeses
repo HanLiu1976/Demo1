@@ -1,0 +1,83 @@
+
+from decimal import Decimal
+import matplotlib.pyplot as plt
+import numpy as np
+from pyral import Rally, rallyWorkset
+
+
+rally = Rally('rally1.rallydev.com', 'han.liu@sas.com', 'A@sas.com', server_ping=True)
+'''
+rally.enableLogging(dest=sys.stdout, attrget=False, append=False)
+response = rally.get('Release', fetch="Project,Name,ReleaseStartDate,ReleaseDate",
+                     order="ReleaseDate")
+
+proj1 = rally.getProjects(workspace='HLS: RnD Health and Life Sciences')
+print ("project = ", proj1[0].Name)
+
+workspaces = rally.getWorkspaces()
+
+query_criteria1 = 'FormattedID = "TC6447"'
+response1 = rally.get('TestCase', fetch=True, query=query_criteria1)
+case1 = response1.next()
+print (case1.details())
+
+
+query_criteria2 = 'Method = "Automated"'
+response2 = rally.get('TestCase', fetch=True, query=query_criteria2)
+print ("Has Method set to Automated =" , response2.resultCount)
+for tem in response2:
+    print (tem.FormattedID + ":" +tem.Name)
+print ("-----------------------------------------------")
+
+
+query_criteria2 = 'Tags = "Candidate for Automation"'
+response2 = rally.get('TestCase', fetch=True, query=query_criteria2)
+print ("Has Method set to Automated =" , response2.resultCount)
+for tem in response2:
+    print (tem.FormattedID + ":" +tem.Name)
+print ("-----------------------------------------------")
+
+
+query_criteria3 = 'Method = "Manual" and Description contains "Automation status: Complete" '
+response3 = rally.get('TestCase', fetch=True, query=query_criteria3)
+print ("Has Method set to Manual but has automation description = Complete :" , response3.resultCount)
+for tem in response3:
+    print (tem.FormattedID + ":" +tem.Name)
+print ("-----------------------------------------------")
+
+query_criteria4 = 'Method = "Manual" and Description contains "Automation status: Partial" '
+response4 = rally.get('TestCase', fetch=True, query=query_criteria4)
+print("Has Method set to Manual but has automation description = Paritial :", response4.resultCount)
+for tem in response4:
+    print(tem.FormattedID + ":" + tem.Name)
+print ("-----------------------------------------------")
+
+query_criteria5 = 'Method = "Manual" and Description contains "Automation status" and (Description contains "Not Started" '
+response5 = rally.get('TestCase', fetch=True, query=query_criteria5)
+print("Not Started :", response5.resultCount)
+for tem in response5:
+    print(tem.FormattedID + ":" + tem.Name)
+print ("-----------------------------------------------")
+
+query_criteria6 = 'Method = "Manual" and Description contains "Automation status" and Description contains "Setup automation available" '
+response6 = rally.get('TestCase', fetch=True, query=query_criteria6)
+print("Setup automation available :", response6.resultCount)
+for tem in response6:
+    print(tem.FormattedID + ":" + tem.Name)
+print ("-----------------------------------------------")
+'''
+
+query_criteria6 = 'PreConditions contains "load script" '
+response6 = rally.get('TestCase', fetch=True, query=query_criteria6)
+print("contains load script  :", response6.resultCount)
+for tem in response6:
+    print(tem.FormattedID + ":" + tem.Name)
+print ("-----------------------------------------------")
+
+query_criteria6 = 'PreConditions contains "file in perforce" or PreConditions contains "bulk" '
+response6 = rally.get('TestCase', fetch=True, query=query_criteria6)
+print("file in perforce  :", response6.resultCount)
+for tem in response6:
+    print(tem.FormattedID + ":" + tem.Name)
+    #print("path=",tem.)
+print ("-----------------------------------------------")
